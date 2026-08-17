@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: crockery-house-fullstack
+    env: node
+    region: singapore # closest to Pakistan - change if needed
+    plan: starter
+    buildCommand: npm install && cd server && npm install && cd .. && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000 # Render sets PORT automatically, but we default to 10000
+    disk:
+      name: crockery-data
+      mountPath: /opt/render/project/src/server
+      sizeGB: 1 # For SQLite persistence - keep db file
+    healthCheckPath: /api/health

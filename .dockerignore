@@ -1,0 +1,12 @@
+node_modules
+server/node_modules
+server/crockery.db
+server/crockery.db-wal
+server/crockery.db-shm
+dist
+.git
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
