@@ -108,13 +108,19 @@ app.use((err, req, res, next) => {
 
 async function startServer() {
   await initDb();
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n🚀 Crockery House Backend running on http://0.0.0.0:${PORT}`);
-    console.log(`📊 Health: http://localhost:${PORT}/api/health`);
-    console.log(`🔐 Admin: admin@crockery.local / admin123`);
-    if (frontendDist) console.log(`🌐 Frontend: http://localhost:${PORT} (served from ${frontendDist})`);
-    console.log('');
-  });
+  if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`\n🚀 Crockery House Backend running on http://0.0.0.0:${PORT}`);
+      console.log(`📊 Health: http://localhost:${PORT}/api/health`);
+      console.log(`🔐 Admin: admin@crockery.local / admin123`);
+      if (frontendDist) console.log(`🌐 Frontend: http://localhost:${PORT} (served from ${frontendDist})`);
+      console.log('');
+    });
+  }
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;
