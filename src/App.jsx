@@ -238,7 +238,7 @@ export default function App() {
   );
 }
 
-// --- Login with Backend ---
+// --- Login ---
 function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('admin@crockery.local');
   const [password, setPassword] = useState('admin123');
@@ -250,61 +250,61 @@ function LoginPage({ onLogin }) {
     try {
       await onLogin(email, password);
     } catch (err) {
-      setError(err.message || 'Invalid credentials. Use admin@crockery.local / admin123');
+      setError(err.message || 'Invalid credentials');
     } finally { setLoading(false); }
   };
   return (
-    <div className="min-h-screen flex bg-[#fcfaf7]">
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-violet-600 via-indigo-600 to-purple-700 p-12 text-white flex-col justify-between relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-3xl -mr-40 -mt-20" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-300/20 rounded-full blur-3xl -ml-20 -mb-20" />
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center"><ChefHat className="text-violet-600" /></div>
-            <span className="font-display font-bold text-xl">Crockery House • Secure</span>
+    <div className="min-h-screen flex bg-slate-50 relative overflow-hidden font-sans">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-purple-50"></div>
+      
+      {/* 3D Decorative Elements */}
+      <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[50%] bg-gradient-to-br from-violet-300 to-indigo-400 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[50%] bg-gradient-to-br from-fuchsia-300 to-purple-400 rounded-full blur-3xl opacity-30 animate-pulse delay-700"></div>
+
+      <div className="flex-1 flex flex-col items-center justify-center p-6 z-10 relative perspective-1000">
+        
+        <div className="flex items-center gap-3 mb-8 transform hover:scale-105 transition-transform duration-500">
+          <div className="w-14 h-14 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-500/40 border border-white/20 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+            <ChefHat className="text-white w-7 h-7 relative z-10 drop-shadow-md" />
           </div>
-          <div className="max-w-md">
-            <h1 className="font-display text-5xl font-bold leading-[1.1] mb-6">JWT + SQLite backend. Bank-grade stock accuracy.</h1>
-            <p className="text-violet-100 text-lg">Express API with bcrypt, JWT 7-day tokens, relational DB, transactional sales & purchases.</p>
-            <div className="mt-10 grid grid-cols-2 gap-4">
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/10">
-                <div className="flex items-center gap-2"><ShieldCheck className="w-5 h-5" /><span className="font-bold">JWT Secured</span></div>
-                <div className="text-violet-200 text-sm mt-1">All /api/* guarded by Bearer token</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/10">
-                <div className="flex items-center gap-2"><Database className="w-5 h-5" /><span className="font-bold">SQLite Relational</span></div>
-                <div className="text-violet-200 text-sm mt-1">8 tables, FKs, transactions</div>
-              </div>
-            </div>
-          </div>
+          <span className="font-display font-bold text-3xl tracking-tight text-slate-800 drop-shadow-sm">Crockery House</span>
         </div>
-        <div className="relative z-10 text-sm text-violet-200">© 2026 Crockery House • API: /api/health • DB: crockery.db</div>
-      </div>
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-md">
-          <div className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="w-9 h-9 bg-violet-600 rounded-xl flex items-center justify-center"><ChefHat className="text-white w-5 h-5" /></div>
-            <span className="font-display font-bold text-lg">Crockery House</span>
-          </div>
-          <div className="bg-white rounded-[24px] shadow-[0_20px_80px_rgba(0,0,0,0.08)] border border-slate-100 p-8">
-            <div className="mb-8">
-              <h2 className="font-display text-3xl font-bold text-slate-900">Secure login</h2>
-              <p className="text-slate-500 mt-2">JWT backend on :3001 + SQLite DB</p>
+
+        <div className="w-full max-w-md relative group">
+          {/* 3D shadow layers behind card */}
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-indigo-500 rounded-[2rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 translate-y-4 translate-x-4"></div>
+          <div className="absolute inset-0 bg-white/50 rounded-[2rem] -rotate-3 border border-white/40 shadow-inner"></div>
+          
+          <div className="bg-white/80 backdrop-blur-2xl rounded-[2rem] p-10 relative z-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white/60 transform transition-all duration-500 hover:translate-y-[-4px]">
+            <div className="mb-10 text-center">
+              <h2 className="font-display text-2xl font-bold text-slate-800">Welcome Back</h2>
+              <p className="text-slate-500 mt-2 text-sm">Sign in to manage your inventory</p>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="text-sm font-medium text-slate-700">Email</label>
-                <input value={email} onChange={e => setEmail(e.target.value)} className="mt-2 w-full h-12 px-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 bg-slate-50" placeholder="admin@crockery.local" />
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">Email Address</label>
+                <div className="relative group/input">
+                  <input value={email} onChange={e => setEmail(e.target.value)} className="w-full h-14 pl-12 pr-4 rounded-2xl border-2 border-slate-100 focus:border-violet-500 focus:outline-none focus:ring-4 focus:ring-violet-500/10 bg-white/50 backdrop-blur-sm transition-all text-slate-800 shadow-inner" placeholder="********" />
+                  <Users className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within/input:text-violet-500 transition-colors" />
+                </div>
               </div>
+              
               <div>
-                <label className="text-sm font-medium text-slate-700">Password (bcrypt hashed)</label>
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="mt-2 w-full h-12 px-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 bg-slate-50" placeholder="••••••••" />
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block ml-1">Password</label>
+                <div className="relative group/input">
+                  <input type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full h-14 pl-12 pr-4 rounded-2xl border-2 border-slate-100 focus:border-violet-500 focus:outline-none focus:ring-4 focus:ring-violet-500/10 bg-white/50 backdrop-blur-sm transition-all text-slate-800 shadow-inner" placeholder="********" />
+                  <Settings className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within/input:text-violet-500 transition-colors" />
+                </div>
               </div>
-              {error && <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl p-3">{error}</div>}
-              <button type="submit" disabled={loading} className="w-full h-12 bg-slate-900 text-white rounded-xl font-semibold hover:bg-black transition flex items-center justify-center gap-2 disabled:opacity-50">
-                {loading ? 'Authenticating...' : <><ShieldCheck className="w-4 h-4" />Sign in Securely</>}
+
+              {error && <div className="text-sm text-red-600 bg-red-50/80 backdrop-blur border border-red-100 rounded-xl p-3 flex items-center gap-2"><AlertTriangle className="w-4 h-4"/>{error}</div>}
+              
+              <button type="submit" disabled={loading} className="w-full h-14 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-2xl font-bold hover:shadow-[0_10px_40px_-10px_rgba(99,102,241,0.8)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 transform hover:scale-[1.02] active:scale-[0.98]">
+                {loading ? 'Authenticating...' : 'Sign In'}
+                <ArrowUpRight className="w-5 h-5" />
               </button>
-              <div className="text-xs text-slate-500 bg-slate-50 rounded-xl p-3 border"><b>Admin:</b> admin@crockery.local / admin123 • Passwords hashed with bcryptjs, JWT 7-day expiry</div>
             </form>
           </div>
         </div>
@@ -335,7 +335,7 @@ function Sidebar({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen, onLogou
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-600/20"><ChefHat className="text-white w-5 h-5" /></div>
             <div>
               <div className="font-display font-bold text-[15px] leading-none">Crockery House</div>
-              <div className="text-[11px] text-slate-500 font-medium tracking-widest uppercase mt-1 flex items-center gap-1"><Database className="w-3 h-3" />SQLite • JWT</div>
+              <div className="text-[11px] text-slate-500 font-medium tracking-widest uppercase mt-1 flex items-center gap-1">Inventory System</div>
             </div>
           </div>
         </div>
@@ -352,9 +352,8 @@ function Sidebar({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen, onLogou
           })}
         </nav>
         <div className="p-3">
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 rounded-2xl p-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-900"><ShieldCheck className="w-4 h-4" />Backend Status</div>
-            <p className="text-xs text-emerald-700/80 mt-1">API:3001 • DB:crockery.db • Auth: Bearer JWT • Transactions ON</p>
+          
+            
           </div>
           <div className="mt-3 flex items-center gap-3 p-2">
             <img src="https://i.pravatar.cc/100?img=33" className="w-8 h-8 rounded-full" />
@@ -378,7 +377,7 @@ function Header({ activeTab, setSidebarOpen, products, sales, dataLoading, onRef
           <div className="hidden md:flex items-center gap-2 text-sm"><span className="text-slate-400">Shop</span><span className="text-slate-300">/</span><span className="font-semibold capitalize">{activeTab}</span></div>
           <div className="hidden md:flex items-center gap-2 ml-6">
             <div className="flex items-center gap-2 bg-white border rounded-full px-3 h-9 text-xs font-semibold">
-              <div className={`w-2 h-2 rounded-full ${dataLoading ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} /> {dataLoading ? 'Syncing DB...' : 'DB Synced'}
+              <div className={`w-2 h-2 rounded-full ${dataLoading ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} /> {dataLoading ? 'Syncing...' : 'Live'}
             </div>
           </div>
         </div>
@@ -456,8 +455,8 @@ function Dashboard({ products, sales, expenses, customers }) {
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight">Dashboard • Backend Live</h1>
-          <p className="text-slate-500 mt-1 flex items-center gap-2"><Database className="w-4 h-4" />SQLite transactional DB • JWT secured • Stock integrity via transactions</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Dashboard</h1>
+          
         </div>
         <div className="flex gap-2">
           <div className="bg-white border rounded-xl px-4 h-10 flex items-center gap-2 text-sm"><Calendar className="w-4 h-4 text-slate-400" />{format(new Date(), 'EEEE, MMM d, yyyy')}</div>
@@ -465,7 +464,7 @@ function Dashboard({ products, sales, expenses, customers }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Products" value={metrics.totalProducts} sub={`${metrics.totalQty} units in stock`} icon={Package} color="violet" trend="DB synced" />
+        <StatCard title="Total Products" value={metrics.totalProducts} sub={`${metrics.totalQty} units in stock`} icon={Package} color="violet" trend="Live" />
         <StatCard title="Today Sales" value={`Rs ${metrics.todaySales.reduce((s, x) => s + (x.finalAmount || 0), 0).toLocaleString()}`} sub={`${metrics.todaySales.length} orders today`} icon={DollarSign} color="emerald" trend="+12% vs yesterday" />
         <StatCard title="Monthly Revenue" value={`Rs ${metrics.monthSales.reduce((s, x) => s + (x.finalAmount || 0), 0).toLocaleString()}`} sub={`${metrics.monthSales.length} transactions`} icon={TrendingUp} color="blue" trend="+8.2%" />
         <StatCard title="Net Profit" value={`Rs ${metrics.netProfit.toLocaleString()}`} sub={`COGS Rs ${metrics.totalCOGS.toLocaleString()}`} icon={Wallet} color="amber" trend={metrics.netProfit > 0 ? 'Profitable' : 'Loss'} negative={metrics.netProfit < 0} />
@@ -546,7 +545,7 @@ function Dashboard({ products, sales, expenses, customers }) {
       </div>
 
       <div className="bg-white rounded-[20px] border shadow-sm overflow-hidden">
-        <div className="p-5 flex items-center justify-between"><h3 className="font-semibold">Recent Transactions (from DB)</h3><span className="text-xs bg-violet-50 text-violet-700 border border-violet-100 px-2 py-1 rounded-full">Live from /api/sales</span></div>
+        <div className="p-5 flex items-center justify-between"><h3 className="font-semibold">Recent Transactions</h3></div>
         <div className="overflow-auto">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-slate-500 text-xs uppercase font-semibold"><tr><th className="text-left p-3">Invoice</th><th className="text-left p-3">Customer</th><th className="text-left p-3">Items</th><th className="text-left p-3">Method</th><th className="text-right p-3">Amount</th><th className="text-right p-3">Profit</th></tr></thead>
@@ -624,11 +623,11 @@ function ProductsPage({ products, suppliers, stockAdjustments, onCreate, onUpdat
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div><h1 className="font-display text-2xl font-bold">Products & Stock • DB Backed</h1><p className="text-sm text-slate-500">POST /api/products • Transactional adjustments • FK protected</p></div>
+        <div><h1 className="font-display text-2xl font-bold">Products & Stock</h1></div>
         <button onClick={() => setShowAdd(true)} className="h-10 px-4 bg-slate-900 text-white rounded-xl text-sm font-semibold flex items-center gap-2"><Plus className="w-4 h-4" />Add Product</button>
       </div>
       <div className="bg-white rounded-[16px] border p-3 flex flex-wrap gap-2">
-        <div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1 min-w-[200px]"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search name or SKU..." className="bg-transparent outline-none text-sm flex-1" /></div>
+        <div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1 min-w-[200px]"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e => setSearch(e.target.value)} placeholder="********" /></div>
         <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} className="h-10 rounded-xl border bg-white px-3 text-sm"><option>All</option>{CATEGORIES.map(c => <option key={c}>{c}</option>)}</select>
         <select value={stockFilter} onChange={e => setStockFilter(e.target.value)} className="h-10 rounded-xl border bg-white px-3 text-sm"><option value="All">All Stock</option><option value="Low">Low Stock</option><option value="InStock">In Stock</option><option value="Out">Out of Stock</option></select>
       </div>
@@ -670,7 +669,7 @@ function ProductsPage({ products, suppliers, stockAdjustments, onCreate, onUpdat
       {showAdd && <ProductModal initial={editing} onClose={() => { setShowAdd(false); setEditing(null); }} onSave={handleSaveProduct} suppliers={suppliers} />}
       {adjusting && <StockAdjustModal product={adjusting} onClose={() => setAdjusting(null)} onAdjust={handleStockAdjust} />}
       <div className="bg-white rounded-[16px] border p-5">
-        <h3 className="font-semibold text-sm mb-3">Recent Stock Adjustments (from DB)</h3>
+        <h3 className="font-semibold text-sm mb-3">Recent Stock Adjustments</h3>
         <div className="space-y-2 max-h-[200px] overflow-auto">
           {stockAdjustments.slice(0,10).map(a => (
             <div key={a.id} className="text-xs flex justify-between border-b py-1.5"><span>{a.productName} • {a.type} {a.qty} • {a.prevQty}→{a.newQty}</span><span className="text-slate-500">{a.reason}</span></div>
@@ -692,7 +691,7 @@ function ProductModal({ initial, onClose, onSave, suppliers }) {
   return (
     <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-white rounded-[24px] w-full max-w-2xl max-h-[90vh] overflow-auto shadow-2xl">
-        <div className="sticky top-0 bg-white border-b p-5 flex items-center justify-between"><h3 className="font-display font-bold text-lg">{initial ? 'Edit Product (PUT /api/products/:id)' : 'Add Product (POST /api/products)'}</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
+        <div className="sticky top-0 bg-white border-b p-5 flex items-center justify-between"><h3 className="font-display font-bold text-lg">{initial ? 'Edit Product' : 'Add Product'}</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
         <div className="p-5 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="md:col-span-1">
@@ -739,7 +738,7 @@ function StockAdjustModal({ product, onClose, onAdjust }) {
             ))}
           </div>
           <div><label className="text-xs font-semibold">Quantity</label><input type="number" min="1" value={qty} onChange={e => setQty(Number(e.target.value))} className="mt-1 w-full h-11 px-3 rounded-xl border bg-slate-50" /></div>
-          <div><label className="text-xs font-semibold">Reason</label><input value={reason} onChange={e => setReason(e.target.value)} placeholder="e.g. Stock counting, broken in transit" className="mt-1 w-full h-11 px-3 rounded-xl border bg-slate-50" /></div>
+          <div><label className="text-xs font-semibold">Reason</label><input value={reason} onChange={e => setReason(e.target.value)} placeholder="********" /></div>
           <div className="bg-slate-50 border rounded-xl p-3 text-sm"><div className="text-xs text-slate-500">Current: {product.quantity} • After: {type === 'add' ? product.quantity + qty : product.quantity - qty}</div></div>
         </div>
         <div className="p-4 flex justify-end gap-2 border-t"><button onClick={onClose} className="h-10 px-4 rounded-xl border">Cancel</button><button onClick={() => onAdjust(type, qty, reason)} className="h-10 px-6 rounded-xl bg-slate-900 text-white font-semibold">Confirm Transaction</button></div>
@@ -762,8 +761,8 @@ function SalesPage({ products, sales, customers, onCreateSale, onRefresh }) {
         <button onClick={() => setShowNewSale(true)} className="h-11 px-5 bg-violet-600 text-white rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg shadow-violet-600/20"><Plus className="w-4 h-4" />New Sale (F2)</button>
       </div>
       <div className="bg-white rounded-[16px] border p-3 flex gap-2">
-        <div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search invoice or customer..." className="bg-transparent outline-none text-sm flex-1" /></div>
-        <div className="hidden md:flex items-center gap-2 text-xs bg-emerald-50 border border-emerald-100 text-emerald-800 px-3 rounded-xl font-semibold"><div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />POS Transactional • JWT Secured</div>
+        <div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e => setSearch(e.target.value)} placeholder="********" /></div>
+        
       </div>
       <div className="bg-white rounded-[20px] border shadow-sm overflow-hidden">
         <div className="overflow-auto">
@@ -845,7 +844,7 @@ function NewSaleModalBackend({ products, customers, onCreateSale, onClose }) {
         discount, tax: 0, paymentMethod
       });
       onClose();
-      alert('Sale completed via transactional API! Stock auto-deducted in DB.');
+      alert('Sale completed! Stock updated.');
     } catch (e) {
       alert('Sale failed: ' + e.message);
     } finally { setSubmitting(false); }
@@ -859,7 +858,7 @@ function NewSaleModalBackend({ products, customers, onCreateSale, onClose }) {
           <div className="p-4 bg-white border-b">
             <div className="flex gap-2">
               <div className="flex-1 relative">
-                <div className="flex items-center gap-2 bg-slate-50 border-2 border-violet-200 rounded-xl px-3 h-12 focus-within:border-violet-500"><Search className="w-5 h-5 text-slate-400" /><input ref={searchRef} value={search} onChange={e => setSearch(e.target.value)} placeholder="Scan barcode / SKU... Press /" className="bg-transparent outline-none flex-1 text-sm font-medium" /></div>
+                <div className="flex items-center gap-2 bg-slate-50 border-2 border-violet-200 rounded-xl px-3 h-12 focus-within:border-violet-500"><Search className="w-5 h-5 text-slate-400" /><input ref={searchRef} value={search} onChange={e => setSearch(e.target.value)} placeholder="********" /></div>
                 {search && (
                   <div className="absolute top-[52px] left-0 right-0 bg-white border rounded-xl shadow-xl z-10 max-h-[300px] overflow-auto">
                     {filteredProducts.length === 0 ? <div className="p-3 text-sm text-slate-500">No products found</div> : filteredProducts.map(p => (
@@ -898,7 +897,7 @@ function NewSaleModalBackend({ products, customers, onCreateSale, onClose }) {
                   </div>
                 )}
               </div>
-              <input value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} placeholder="Phone (optional)" className="mt-2 w-full h-10 px-3 rounded-xl border bg-slate-50 text-sm" />
+              <input value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} placeholder="********" />
             </div>
             <div className="grid grid-cols-3 gap-2">
               {PAYMENT_METHODS.map(m => (
@@ -939,7 +938,7 @@ function InvoiceModal({ sale, onClose }) {
       <div className="bg-white rounded-[20px] w-full max-w-xl shadow-2xl max-h-[90vh] overflow-auto">
         <div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Invoice {sale.id} • DB Record</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
         <div className="p-6 space-y-4">
-          <div className="flex justify-between"><div><div className="font-display font-bold text-lg">Crockery House</div><div className="text-xs text-slate-500">DB: crockery.db<br/>JWT Secured Transaction</div></div><div className="text-right text-xs"><div className="font-bold">{sale.id}</div><div>{sale.date}</div><div className="mt-1 px-2 py-1 bg-slate-100 rounded-full inline-block">{sale.paymentMethod}</div></div></div>
+          <div className="flex justify-between"><div><div className="font-display font-bold text-lg">Crockery House</div><div className="text-xs text-slate-500">Receipt</div></div><div className="text-right text-xs"><div className="font-bold">{sale.id}</div><div>{sale.date}</div><div className="mt-1 px-2 py-1 bg-slate-100 rounded-full inline-block">{sale.paymentMethod}</div></div></div>
           <table className="w-full text-sm"><thead className="text-xs text-slate-500 uppercase border-b"><tr><th className="text-left py-2">Item</th><th className="text-center">Qty</th><th className="text-right">Price</th><th className="text-right">Total</th></tr></thead><tbody>{sale.items.map((it, idx) => <tr key={idx} className="border-b last:border-0"><td className="py-2">{it.name}</td><td className="text-center">{it.qty}</td><td className="text-right">Rs {it.price?.toLocaleString()}</td><td className="text-right">Rs {(it.price*it.qty).toLocaleString()}</td></tr>)}</tbody></table>
           <div className="space-y-1 text-sm text-right"><div>Subtotal: Rs {sale.subtotal?.toLocaleString()}</div><div>Discount ({sale.discount}%): -Rs {(sale.subtotal * sale.discount /100).toLocaleString()}</div><div className="font-bold text-base border-t pt-2">Total: Rs {sale.finalAmount?.toLocaleString()}</div></div>
         </div>
@@ -1001,7 +1000,7 @@ function PurchaseModalBackend({ products, suppliers, onCreate, onClose }) {
       <div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">New Purchase • POST /api/purchases</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
       <div className="p-5 space-y-4">
         <div><label className="text-xs font-semibold">Supplier FK</label><select value={supplierId} onChange={e=>setSupplierId(e.target.value)} className="mt-1 w-full h-11 px-3 rounded-xl border bg-slate-50">{suppliers.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></div>
-        <div><label className="text-xs font-semibold">Search Product</label><div className="mt-1 flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-11"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e=>setSearch(e.target.value)} className="bg-transparent outline-none flex-1 text-sm" placeholder="Type product name..." /></div>
+        <div><label className="text-xs font-semibold">Search Product</label><div className="mt-1 flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-11"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e=>setSearch(e.target.value)} className="bg-transparent outline-none flex-1 text-sm" placeholder="********" /></div>
           {search && <div className="mt-2 border rounded-xl overflow-hidden">{filtered.map(p=><button key={p.id} onClick={()=>{addItem(p); setSearch('');}} className="w-full text-left p-2.5 hover:bg-slate-50 text-sm flex justify-between"><span>{p.name}</span><span className="text-xs bg-slate-100 px-2 py-0.5 rounded-full">{p.quantity} in stock</span></button>)}</div>}
         </div>
         <div className="space-y-2">{items.map(it=><div key={it.productId} className="flex items-center gap-2 bg-slate-50 border rounded-xl p-2"><div className="flex-1 text-sm font-medium">{it.name}</div><input type="number" value={it.qty} onChange={e=>setItems(items.map(x=>x.productId===it.productId?{...x,qty:Number(e.target.value)}:x))} className="w-16 h-8 rounded-lg border px-2 text-sm" /><input type="number" value={it.cost} onChange={e=>setItems(items.map(x=>x.productId===it.productId?{...x,cost:Number(e.target.value)}:x))} className="w-24 h-8 rounded-lg border px-2 text-sm" /><button onClick={()=>setItems(items.filter(x=>x.productId!==it.productId))} className="w-8 h-8 bg-white border rounded-full flex items-center justify-center"><X className="w-3 h-3" /></button></div>)}</div>
@@ -1024,10 +1023,10 @@ function SupplierModalBackend({ onClose, onCreate }) {
     <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl">
       <div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Supplier • POST /api/suppliers</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
       <div className="p-5 space-y-3">
-        <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Supplier name" className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
-        <input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} placeholder="Phone" className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
-        <input value={form.email} onChange={e=>setForm({...form,email:e.target.value})} placeholder="Email" className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
-        <input value={form.address} onChange={e=>setForm({...form,address:e.target.value})} placeholder="Address" className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
+        <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="********" />
+        <input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} placeholder="********" />
+        <input value={form.email} onChange={e=>setForm({...form,email:e.target.value})} placeholder="********" />
+        <input value={form.address} onChange={e=>setForm({...form,address:e.target.value})} placeholder="********" />
       </div>
       <div className="p-4 border-t flex justify-end gap-2"><button onClick={onClose} className="h-10 px-4 rounded-xl border">Cancel</button><button disabled={submitting} onClick={handleAdd} className="h-10 px-6 rounded-xl bg-slate-900 text-white">{submitting ? '...' : 'Add to DB'}</button></div>
     </div></div>
@@ -1066,8 +1065,8 @@ function ExpenseModalBackend({ onClose, onCreate }) {
       <div className="p-5 space-y-3">
         <select value={form.category} onChange={e=>setForm({...form,category:e.target.value})} className="w-full h-11 px-3 rounded-xl border bg-slate-50">{EXPENSE_CATEGORIES.map(c=><option key={c}>{c}</option>)}</select>
         <input type="date" value={form.date} onChange={e=>setForm({...form,date:e.target.value})} className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
-        <input value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="Description" className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
-        <input type="number" value={form.amount} onChange={e=>setForm({...form,amount:e.target.value})} placeholder="Amount Rs" className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
+        <input value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="********" />
+        <input type="number" value={form.amount} onChange={e=>setForm({...form,amount:e.target.value})} placeholder="********" />
       </div>
       <div className="p-4 border-t flex justify-end gap-2"><button onClick={onClose} className="h-10 px-4 rounded-xl border">Cancel</button><button disabled={submitting} onClick={handleSave} className="h-10 px-6 rounded-xl bg-slate-900 text-white">{submitting ? 'Saving...' : 'Save to DB'}</button></div>
     </div></div>
@@ -1154,7 +1153,7 @@ function CustomersPage({ customers, sales, onCreate }) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between"><div><h1 className="font-display text-2xl font-bold">Customers • DB</h1><p className="text-sm text-slate-500">GET /api/customers • total_spent aggregated</p></div><button onClick={()=>setShowAdd(true)} className="h-10 px-5 bg-slate-900 text-white rounded-xl text-sm font-semibold flex items-center gap-2"><Plus className="w-4 h-4" />Add Customer</button></div>
-      <div className="bg-white rounded-[16px] border p-3 flex gap-2"><div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search customers..." className="bg-transparent outline-none text-sm flex-1" /></div></div>
+      <div className="bg-white rounded-[16px] border p-3 flex gap-2"><div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="********" /></div></div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map(c=>{
           const cSales = sales.filter(s=>s.customerName===c.name || s.customerId===c.id);
@@ -1173,7 +1172,7 @@ function CustomerModalBackend({ onClose, onCreate }) {
     setSubmitting(true);
     try { await onCreate(form); onClose(); } catch (e) { alert(e.message); } finally { setSubmitting(false); }
   };
-  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl"><div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Customer • POST /api/customers</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div><div className="p-5 space-y-3"><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Full name" className="w-full h-11 px-3 rounded-xl border bg-slate-50" /><input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} placeholder="Phone" className="w-full h-11 px-3 rounded-xl border bg-slate-50" /><input value={form.address} onChange={e=>setForm({...form,address:e.target.value})} placeholder="Address" className="w-full h-11 px-3 rounded-xl border bg-slate-50" /></div><div className="p-4 border-t flex justify-end gap-2"><button onClick={onClose} className="h-10 px-4 rounded-xl border">Cancel</button><button disabled={submitting} onClick={handleAdd} className="h-10 px-6 rounded-xl bg-slate-900 text-white">{submitting ? '...' : 'Add to DB'}</button></div></div></div>;
+  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl"><div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Customer • POST /api/customers</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div><div className="p-5 space-y-3"><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="********">{submitting ? '...' : 'Add to DB'}</button></div></div></div>;
 }
 
 function SuppliersPage({ suppliers, purchases, onCreate }) {
@@ -1183,11 +1182,72 @@ function SuppliersPage({ suppliers, purchases, onCreate }) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between"><div><h1 className="font-display text-2xl font-bold">Suppliers • DB</h1><p className="text-sm text-slate-500">FK protected • purchases join</p></div><button onClick={()=>setShowAdd(true)} className="h-10 px-5 bg-slate-900 text-white rounded-xl text-sm font-semibold flex items-center gap-2"><Plus className="w-4 h-4" />Add Supplier</button></div>
-      <div className="bg-white rounded-[16px] border p-3 flex gap-2"><div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search suppliers..." className="bg-transparent outline-none text-sm flex-1" /></div></div>
+      <div className="bg-white rounded-[16px] border p-3 flex gap-2"><div className="flex items-center gap-2 bg-slate-50 border rounded-xl px-3 h-10 flex-1"><Search className="w-4 h-4 text-slate-400" /><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="********" /></div></div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map(s=>{ const tot = purchases.filter(p=>p.supplierId===s.id).reduce((sum,p)=>sum+(p.total||0),0); const count = purchases.filter(p=>p.supplierId===s.id).length; return <div key={s.id} className="bg-white rounded-[20px] border p-5 shadow-sm"><div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white flex items-center justify-center font-bold">{s.name[0]}</div><div><div className="font-semibold text-sm">{s.name}</div><div className="text-xs text-slate-500">{s.phone}</div></div></div><div className="mt-4 text-xs text-slate-500">{s.address}</div><div className="mt-4 grid grid-cols-2 gap-2"><div className="bg-slate-50 border rounded-xl p-2.5"><div className="text-[10px] uppercase font-bold text-slate-500">Total Purchases</div><div className="font-bold">Rs {tot.toLocaleString()}</div></div><div className="bg-slate-50 border rounded-xl p-2.5"><div className="text-[10px] uppercase font-bold text-slate-500">Orders</div><div className="font-bold">{count}</div></div></div></div>; })}
       </div>
       {showAdd && <SupplierModalBackend onClose={()=>setShowAdd(false)} onCreate={onCreate} />}
+    </div>
+  );
+}
+
+// --- Settings Tab ---
+function SettingsTab({ user }) {
+  const [email, setEmail] = useState(user?.email || '');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    if (!password) return alert('Enter a new password');
+    setLoading(true);
+    setMsg('');
+    try {
+      await apiFetch('/auth/me/password', {
+        method: 'PUT',
+        body: JSON.stringify({ email, newPassword: password })
+      });
+      setMsg('Login info updated successfully!');
+      setPassword('');
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto space-y-6">
+      <h1 className="font-display text-2xl font-bold">Settings</h1>
+      
+      <div className="bg-white rounded-[20px] border shadow-sm p-6">
+        <h2 className="font-semibold text-lg mb-4">Change Login Info</h2>
+        <form onSubmit={handleUpdate} className="space-y-4">
+          <div>
+            <label className="text-sm font-medium text-slate-700">Email Address</label>
+            <input 
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              className="mt-2 w-full h-11 px-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 bg-slate-50" 
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700">New Password</label>
+            <input 
+              type="password" 
+              value={password} 
+              onChange={e => setPassword(e.target.value)} 
+              className="mt-2 w-full h-11 px-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 bg-slate-50" 
+              placeholder="********" 
+            />
+          </div>
+          {msg && <div className="text-sm text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-xl p-3">{msg}</div>}
+          <button type="submit" disabled={loading} className="h-11 px-6 bg-slate-900 text-white rounded-xl font-semibold hover:bg-black transition flex items-center justify-center gap-2">
+            {loading ? 'Saving...' : 'Save Changes'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
