@@ -351,11 +351,8 @@ function Sidebar({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen, onLogou
             );
           })}
         </nav>
-        <div className="p-3">
-          
-            
-          </div>
-          <div className="mt-3 flex items-center gap-3 p-2">
+        <div className="p-3 border-t border-slate-100">
+          <div className="mt-2 flex items-center gap-3 p-2">
             <img src="https://i.pravatar.cc/100?img=33" className="w-8 h-8 rounded-full" />
             <div className="flex-1 min-w-0"><div className="text-sm font-semibold truncate">{user?.name || 'Shop Owner'}</div><div className="text-[11px] text-slate-500">{user?.role} • {user?.email}</div></div>
             <button onClick={onLogout} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200"><LogOut className="w-4 h-4" /></button>
@@ -1172,7 +1169,7 @@ function CustomerModalBackend({ onClose, onCreate }) {
     setSubmitting(true);
     try { await onCreate(form); onClose(); } catch (e) { alert(e.message); } finally { setSubmitting(false); }
   };
-  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl"><div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Customer • POST /api/customers</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div><div className="p-5 space-y-3"><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="********">{submitting ? '...' : 'Add to DB'}</button></div></div></div>;
+  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl"><div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Customer • POST /api/customers</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div><div className="p-5 space-y-3"><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} className="w-full h-10 px-3 border rounded-xl" placeholder="Name" /><button type="submit" className="w-full h-10 bg-slate-900 text-white rounded-xl">{submitting ? '...' : 'Add to DB'}</button></div></div></div>;
 }
 
 function SuppliersPage({ suppliers, purchases, onCreate }) {
@@ -1251,3 +1248,4 @@ function SettingsTab({ user }) {
     </div>
   );
 }
+
