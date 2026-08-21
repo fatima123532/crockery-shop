@@ -31,21 +31,18 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Init DB - real data, no hardcoded demo
-initDb();
-
 // API Health
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
   const counts = {
-    products: db.prepare('SELECT COUNT(*) as c FROM products').get().c,
-    sales: db.prepare('SELECT COUNT(*) as c FROM sales').get().c,
-    customers: db.prepare('SELECT COUNT(*) as c FROM customers').get().c,
-    suppliers: db.prepare('SELECT COUNT(*) as c FROM suppliers').get().c,
-    purchases: db.prepare('SELECT COUNT(*) as c FROM purchases').get().c,
-    expenses: db.prepare('SELECT COUNT(*) as c FROM expenses').get().c,
-    users: db.prepare('SELECT COUNT(*) as c FROM users').get().c,
+    products: (await db.prepare('SELECT COUNT(*) as c FROM products').get()).c,
+    sales: (await db.prepare('SELECT COUNT(*) as c FROM sales').get()).c,
+    customers: (await db.prepare('SELECT COUNT(*) as c FROM customers').get()).c,
+    suppliers: (await db.prepare('SELECT COUNT(*) as c FROM suppliers').get()).c,
+    purchases: (await db.prepare('SELECT COUNT(*) as c FROM purchases').get()).c,
+    expenses: (await db.prepare('SELECT COUNT(*) as c FROM expenses').get()).c,
+    users: (await db.prepare('SELECT COUNT(*) as c FROM users').get()).c,
   };
-  res.json({ status: 'ok', counts, message: 'JWT Backend + SQLite ready - Real Data Mode', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', counts, message: 'JWT Backend + PostgreSQL ready - Real Data Mode', timestamp: new Date().toISOString() });
 });
 
 // API Routes
@@ -58,8 +55,8 @@ app.use('/api/purchases', purchaseRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/reports', reportRoutes);
 
-app.get('/api/adjustments', authenticate, (req, res) => {
-  const adjustments = db.prepare('SELECT * FROM stock_adjustments ORDER BY date DESC').all();
+app.get('/api/adjustments', authenticate, async (req, res) => {
+  const adjustments = await db.prepare('SELECT * FROM stock_adjustments ORDER BY date DESC').all();
   res.json(adjustments.map(a => ({
     id: a.id,
     productId: a.product_id,
@@ -74,12 +71,11 @@ app.get('/api/adjustments', authenticate, (req, res) => {
 });
 
 // --- Production: Serve frontend static files ---
-// Frontend build output should be in ../dist (Vite default)
 const frontendDistPaths = [
-  path.join(__dirname, '../dist'),          // when running from server/ with front dist at root/dist
-  path.join(__dirname, '../../dist'),       // alternative
-  path.join(__dirname, '../client/dist'),   // alternative
-  path.join(process.cwd(), 'dist'),         // when process cwd is root
+  path.join(__dirname, '../dist'),
+  path.join(__dirname, '../../dist'),
+  path.join(__dirname, '../client/dist'),
+  path.join(process.cwd(), 'dist'),
   path.join(process.cwd(), '../dist')
 ];
 
@@ -94,21 +90,14 @@ for (const p of frontendDistPaths) {
 
 if (frontendDist) {
   app.use(express.static(frontendDist));
-  // For SPA - serve index.html for non-API routes
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api/')) return next();
     res.sendFile(path.join(frontendDist, 'index.html'));
   });
 } else {
-  console.log('⚠️ Frontend dist not found - running in API-only mode. Build frontend with: npm run build');
+  console.log('⚠️ Frontend dist not found - running in API-only mode.');
   app.get('/', (req, res) => {
-    res.json({ 
-      status: 'Crockery House API running - Real Data Mode', 
-      version: '1.0.0', 
-      frontend: 'Not built - run npm run build in root',
-      endpoints: ['/api/health', '/api/auth/login', '/api/products', '/api/sales'],
-      message: 'Deploy frontend separately to Vercel or build and serve via this server'
-    });
+    res.json({ status: 'Crockery House API running - Real Data Mode (Postgres)', version: '1.0.0' });
   });
 }
 
@@ -117,11 +106,15 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n🚀 Crockery House Backend running on http://0.0.0.0:${PORT}`);
-  console.log(`📊 Health: http://localhost:${PORT}/api/health`);
-  console.log(`🔐 Admin: admin@crockery.local / admin123`);
-  console.log(`💾 DB: ${path.join(__dirname, 'crockery.db')} - Real data, zero hardcoded`);
-  if (frontendDist) console.log(`🌐 Frontend: http://localhost:${PORT} (served from ${frontendDist})`);
-  console.log('');
-});
+async function startServer() {
+  await initDb();
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 Crockery House Backend running on http://0.0.0.0:${PORT}`);
+    console.log(`📊 Health: http://localhost:${PORT}/api/health`);
+    console.log(`🔐 Admin: admin@crockery.local / admin123`);
+    if (frontendDist) console.log(`🌐 Frontend: http://localhost:${PORT} (served from ${frontendDist})`);
+    console.log('');
+  });
+}
+
+startServer();

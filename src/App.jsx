@@ -230,6 +230,7 @@ export default function App() {
             {activeTab === 'reports' && <ReportsPage products={products} sales={sales} expenses={expenses} purchases={purchases} />}
             {activeTab === 'customers' && <CustomersPage customers={customers} sales={sales} onCreate={createCustomer} />}
             {activeTab === 'suppliers' && <SuppliersPage suppliers={suppliers} purchases={purchases} onCreate={createSupplier} />}
+            {activeTab === 'settings' && <SettingsTab user={auth} />}
           </main>
         </div>
       </div>
@@ -323,6 +324,7 @@ function Sidebar({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen, onLogou
     { id: 'reports', label: 'Reports', icon: BarChart3 },
     { id: 'customers', label: 'Customers', icon: Users },
     { id: 'suppliers', label: 'Suppliers', icon: Boxes },
+    { id: 'settings', label: 'Settings', icon: Settings },
   ];
   return (
     <>

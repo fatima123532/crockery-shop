@@ -6,7 +6,7 @@ import { signToken, authenticate } from '../middleware/auth.js';
 const router = express.Router();
 
 // Register (for staff creation)
-router.post('/register', authenticate, (req, res) => {
+router.post('/register', authenticate, async (req, res) => {
   // Only admin can create users
   if (req.user.role !== 'admin') {
     return res.status(403).json({ error: 'Only admin can create users' });
@@ -15,21 +15,21 @@ router.post('/register', authenticate, (req, res) => {
   if (!email || !password || !name) {
     return res.status(400).json({ error: 'Email, password, name required' });
   }
-  const existing = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  const existing = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
   if (existing) return res.status(400).json({ error: 'User already exists' });
   
   const hash = bcrypt.hashSync(password, 10);
-  const result = db.prepare('INSERT INTO users (email, password_hash, name, role) VALUES (?,?,?,?)').run(email, hash, name, role || 'staff');
+  const result = await db.prepare('INSERT INTO users (email, password_hash, name, role) VALUES (?,?,?,?)').run(email, hash, name, role || 'staff');
   const user = { id: result.lastInsertRowid, email, name, role: role || 'staff' };
   res.json({ user, token: signToken(user) });
 });
 
 // Login
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
   
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
   if (!user) return res.status(401).json({ error: 'Invalid credentials' });
   
   const valid = bcrypt.compareSync(password, user.password_hash);
@@ -42,16 +42,35 @@ router.post('/login', (req, res) => {
 });
 
 // Me
-router.get('/me', authenticate, (req, res) => {
-  const user = db.prepare('SELECT id, email, name, role, created_at FROM users WHERE id = ?').get(req.user.id);
+router.get('/me', authenticate, async (req, res) => {
+  const user = await db.prepare('SELECT id, email, name, role, created_at FROM users WHERE id = ?').get(req.user.id);
   if (!user) return res.status(404).json({ error: 'User not found' });
   res.json(user);
 });
 
+// Update Password
+router.put('/me/password', authenticate, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: 'Current and new password required' });
+  }
+
+  const user = await db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  const valid = bcrypt.compareSync(currentPassword, user.password_hash);
+  if (!valid) return res.status(401).json({ error: 'Invalid current password' });
+
+  const hash = bcrypt.hashSync(newPassword, 10);
+  await db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, req.user.id);
+  
+  res.json({ success: true, message: 'Password updated successfully' });
+});
+
 // List users (admin)
-router.get('/users', authenticate, (req, res) => {
+router.get('/users', authenticate, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
-  const users = db.prepare('SELECT id, email, name, role, created_at FROM users').all();
+  const users = await db.prepare('SELECT id, email, name, role, created_at FROM users').all();
   res.json(users);
 });
 
