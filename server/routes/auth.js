@@ -48,23 +48,29 @@ router.get('/me', authenticate, async (req, res) => {
   res.json(user);
 });
 
-// Update Password
-router.put('/me/password', authenticate, async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
-  if (!currentPassword || !newPassword) {
-    return res.status(400).json({ error: 'Current and new password required' });
-  }
-
+// Update Settings
+router.put('/me/settings', authenticate, async (req, res) => {
+  const { currentPassword, newPassword, email } = req.body;
+  
   const user = await db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
   if (!user) return res.status(404).json({ error: 'User not found' });
 
-  const valid = bcrypt.compareSync(currentPassword, user.password_hash);
-  if (!valid) return res.status(401).json({ error: 'Invalid current password' });
+  // Optional password update
+  if (currentPassword && newPassword) {
+    const valid = bcrypt.compareSync(currentPassword, user.password_hash);
+    if (!valid) return res.status(401).json({ error: 'Invalid current password' });
+    const hash = bcrypt.hashSync(newPassword, 10);
+    await db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, req.user.id);
+  }
 
-  const hash = bcrypt.hashSync(newPassword, 10);
-  await db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, req.user.id);
+  // Optional email update
+  if (email && email !== user.email) {
+    const existing = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (existing) return res.status(400).json({ error: 'Email already in use' });
+    await db.prepare('UPDATE users SET email = ? WHERE id = ?').run(email, req.user.id);
+  }
   
-  res.json({ success: true, message: 'Password updated successfully' });
+  res.json({ success: true, message: 'Settings updated successfully' });
 });
 
 // List users (admin)
