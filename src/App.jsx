@@ -1011,26 +1011,26 @@ function PurchaseModalBackend({ products, suppliers, onCreate, onClose }) {
 function SupplierModalBackend({ onClose, onCreate }) {
   const [form, setForm] = useState({ name: '', phone: '', email: '', address: '' });
   const [submitting, setSubmitting] = useState(false);
-  const handleAdd = async () => {
-    if (!form.name) return alert('Name required');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name) return alert('Name is required');
     setSubmitting(true);
     try { await onCreate(form); onClose(); } catch (e) { alert(e.message); } finally { setSubmitting(false); }
   };
-  return (
-    <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl">
-      <div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Supplier • POST /api/suppliers</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
-      <div className="p-5 space-y-3">
-        <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Search..." />
-        <input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} placeholder="Search..." />
-        <input value={form.email} onChange={e=>setForm({...form,email:e.target.value})} placeholder="Search..." />
-        <input value={form.address} onChange={e=>setForm({...form,address:e.target.value})} placeholder="Search..." />
-      </div>
-      <div className="p-4 border-t flex justify-end gap-2"><button onClick={onClose} className="h-10 px-4 rounded-xl border">Cancel</button><button disabled={submitting} onClick={handleAdd} className="h-10 px-6 rounded-xl bg-slate-900 text-white">{submitting ? '...' : 'Add to DB'}</button></div>
-    </div></div>
-  );
+  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="bg-white rounded-[24px] w-full max-w-md shadow-2xl max-h-[90vh] flex flex-col">
+      <div className="p-6 border-b flex items-center justify-between"><h3 className="font-display font-bold text-lg">Add Supplier</h3><button type="button" onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
+      <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Supplier / Brand Name *</label><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="E.g., Royal Doulton Dist." /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Phone Number</label><input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="Contact number" /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Email Address</label><input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="supplier@example.com" /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Address</label><input value={form.address} onChange={e=>setForm({...form,address:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="Warehouse address" /></div>
+        <button type="submit" disabled={submitting} className="w-full h-12 bg-slate-900 text-white rounded-xl font-bold mt-2">{submitting ? 'Saving...' : 'Save Supplier'}</button>
+      </form>
+    </div>
+  </div>;
 }
 
-// --- Expenses, Reports, Customers, Suppliers (backend versions) ---
 function ExpensesPage({ expenses, onCreate, onDelete }) {
   const [showAdd, setShowAdd] = useState(false);
   const [filter, setFilter] = useState('All');
@@ -1049,25 +1049,26 @@ function ExpensesPage({ expenses, onCreate, onDelete }) {
   );
 }
 function ExpenseModalBackend({ onClose, onCreate }) {
-  const [form, setForm] = useState({ category: EXPENSE_CATEGORIES[0], description: '', amount: '', date: new Date().toISOString().slice(0,10) });
+  const [form, setForm] = useState({ date: new Date().toISOString().slice(0, 10), category: EXPENSE_CATEGORIES[0], description: '', amount: '' });
   const [submitting, setSubmitting] = useState(false);
-  const handleSave = async () => {
-    if (!form.amount) return alert('Amount required');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.amount || !form.description) return alert('Amount and Description required');
     setSubmitting(true);
-    try { await onCreate({ ...form, amount: Number(form.amount), date: new Date(form.date).toISOString() }); onClose(); } catch (e) { alert(e.message); } finally { setSubmitting(false); }
+    try { await onCreate({ ...form, amount: Number(form.amount) }); onClose(); } catch (e) { alert(e.message); } finally { setSubmitting(false); }
   };
-  return (
-    <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl">
-      <div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Expense • POST /api/expenses</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
-      <div className="p-5 space-y-3">
-        <select value={form.category} onChange={e=>setForm({...form,category:e.target.value})} className="w-full h-11 px-3 rounded-xl border bg-slate-50">{EXPENSE_CATEGORIES.map(c=><option key={c}>{c}</option>)}</select>
-        <input type="date" value={form.date} onChange={e=>setForm({...form,date:e.target.value})} className="w-full h-11 px-3 rounded-xl border bg-slate-50" />
-        <input value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="Search..." />
-        <input type="number" value={form.amount} onChange={e=>setForm({...form,amount:e.target.value})} placeholder="Search..." />
-      </div>
-      <div className="p-4 border-t flex justify-end gap-2"><button onClick={onClose} className="h-10 px-4 rounded-xl border">Cancel</button><button disabled={submitting} onClick={handleSave} className="h-10 px-6 rounded-xl bg-slate-900 text-white">{submitting ? 'Saving...' : 'Save to DB'}</button></div>
-    </div></div>
-  );
+  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="bg-white rounded-[24px] w-full max-w-md shadow-2xl max-h-[90vh] flex flex-col">
+      <div className="p-6 border-b flex items-center justify-between"><h3 className="font-display font-bold text-lg">Add Expense</h3><button type="button" onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
+      <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Date</label><input type="date" value={form.date} onChange={e=>setForm({...form,date:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Category</label><select value={form.category} onChange={e=>setForm({...form,category:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white">{EXPENSE_CATEGORIES.map(c=><option key={c}>{c}</option>)}</select></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Description *</label><input value={form.description} onChange={e=>setForm({...form,description:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="E.g., Monthly electricity bill" /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Amount (Rs) *</label><input type="number" min="0" value={form.amount} onChange={e=>setForm({...form,amount:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white font-mono" placeholder="10000" /></div>
+        <button type="submit" disabled={submitting} className="w-full h-12 bg-slate-900 text-white rounded-xl font-bold mt-2">{submitting ? 'Saving...' : 'Save Expense'}</button>
+      </form>
+    </div>
+  </div>;
 }
 
 function ReportsPage({ products, sales, expenses, purchases }) {
@@ -1162,14 +1163,26 @@ function CustomersPage({ customers, sales, onCreate }) {
   );
 }
 function CustomerModalBackend({ onClose, onCreate }) {
-  const [form,setForm]=useState({name:'',phone:'',address:''});
-  const [submitting,setSubmitting]=useState(false);
-  const handleAdd = async () => {
-    if(!form.name) return alert('Name required');
+  const [form, setForm] = useState({ name: '', phone: '', email: '', address: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name) return alert('Name is required');
     setSubmitting(true);
     try { await onCreate(form); onClose(); } catch (e) { alert(e.message); } finally { setSubmitting(false); }
   };
-  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"><div className="bg-white rounded-[20px] w-full max-w-md shadow-2xl"><div className="p-5 border-b flex items-center justify-between"><h3 className="font-semibold">Add Customer • POST /api/customers</h3><button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div><div className="p-5 space-y-3"><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} className="w-full h-10 px-3 border rounded-xl" placeholder="Name" /><button type="submit" className="w-full h-10 bg-slate-900 text-white rounded-xl">{submitting ? '...' : 'Add to DB'}</button></div></div></div>;
+  return <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="bg-white rounded-[24px] w-full max-w-md shadow-2xl max-h-[90vh] flex flex-col">
+      <div className="p-6 border-b flex items-center justify-between"><h3 className="font-display font-bold text-lg">Add Customer</h3><button type="button" onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><X className="w-4 h-4" /></button></div>
+      <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Customer Name *</label><input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="E.g., John Doe" /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Phone Number</label><input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="0300-1234567" /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Email Address</label><input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="john@example.com" /></div>
+        <div><label className="text-xs font-semibold uppercase text-slate-500 tracking-wider block mb-1">Address</label><input value={form.address} onChange={e=>setForm({...form,address:e.target.value})} className="w-full h-12 px-4 border-2 border-slate-100 rounded-xl focus:border-violet-500 focus:outline-none bg-white" placeholder="123 Main St" /></div>
+        <button type="submit" disabled={submitting} className="w-full h-12 bg-slate-900 text-white rounded-xl font-bold mt-2">{submitting ? 'Saving...' : 'Save Customer'}</button>
+      </form>
+    </div>
+  </div>;
 }
 
 function SuppliersPage({ suppliers, purchases, onCreate }) {
